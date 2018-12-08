@@ -105,6 +105,55 @@
         
           <section id="main">
   
+    <article id="post-MySQL的查询" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2018/12/08/MySQL的查询/">MySQL的查询</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/12/08/MySQL的查询/" class="article-date">
+	  <time datetime="2018-12-08T03:31:49.000Z" itemprop="datePublished">December 8, 2018</time>
+	</a>
+
+       
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>1.列约束<br>（1）主键约束  ——PRIMARY KEY<br>（2）唯一约束——UNIQUE<br>（3）非空约束——NOT NULL<br>声明了非空约束的列上不能插入NULL<br>（4）默认值约束——DEFAULT<br>可以使用DEFAULT来声明默认值，有两种方式可以应用默认值<br>INSERT INTO xz_laptop_family VALUES(40, ‘苹果’,DEFAULT,);<br>INSERT INTO xz_laptop_family(fid,fname) VALUES(50,’华硕’);<br>(5)检查约束——CHECK<br>检查约束可以对插入的数据进行检验<br>CREATE TABLE student(<br>age TINYINT CHECK(age&gt;=18 AND age&lt;=60)<br>);<br>mysql不支持检查约束，会降低数据的插入速度。<br>（6）外键约束——FOREIGN KEY<br>声明了外键约束的列，取值必须在另一个表的主键列上出现过，列类型要保持一致，取值可以是NULL<br>FOREIGN KEY(familyId) REFERENCES xz_laptop_family(fid)<br>2.MySQL中的自增列<br>AUTO_INCREMENT:自动增长，假如一个列声明了自增列，无需手动赋值，直接设置为NULL，会获取当前最大值，然后加1插入。<br>注意：<br>        自增列允许手动赋值<br>        只适用于整数型的主键上</p>
+<p>练习：创建jiao本文件02_tedu.sql，创建数据库tedu，设置编码<br>创建部门表dept(did、dname)<br>10 研发部 20 市场部 30 运营部 40 测试部<br>创建员工表emp(eid ename sex birthday salary deptId)<br>插入15条数据，有一个员工没有确定部门，有一个部门没有员工<br>3.简单查询<br>(1)查询特定的列<br>示例：查询所有员工的姓名、工资、生日<br>SELECT ename,salary,birthday FROM emp;<br>练习：查询所有员工的编号，姓名，性别，所属部门编号<br>SELECT eid,ename,sex,deptId FROM emp;<br>（2）查询所有的列<br>SELECT <em> FROM dept,emp;<br>SELECT eid,ename,sex,birthday,salary,deptId FROM emp;<br>(3)给列起别名<br>  示例：查询所有员工的姓名和工资，使用汉字的别名显示<br>SELECT ename AS 姓名,salary AS 工资 FROM emp;<br>练习：查询所有员工的编号，姓名，性别，生日，使用汉字的别名显示<br>SELECT eid AS 编号,ename AS 姓名,sex AS 性别,birthday AS 生日 FROM emp;<br>练习：查询所有员工的编号，姓名，使用1个英文别名显示<br>SELECT eid AS a,ename AS b FROM emp;<br>SELECT eid a,ename b FROM emp;<br>注意：AS 关键字是可以省略的，保留空格。<br>（4）只显示不同的记录/合并相同的记录<br>示例：查询出的员工都在哪些部门<br>SELECT DISTINCT deptId FROM emp;<br>练习：查询都有哪些性别的员工<br>SELECT DISTINCT sex FROM emp;<br> (5)在查询时进行计算<br>示例：计算2</em>33/47-8+10<br>SELECT 2<em>33/47-8+10;<br>查询出所有员工的姓名及其年薪<br>SELECT ename 姓名 ,salary</em>12 年薪 FROM emp;<br>练习：假设每个员工工资增加500元，年终奖5000元，查询所有员工的姓名及其年薪，要起别名</p>
+<p>SELECT ename 姓名 ,(salary+500)<em>12+5000 年薪 FROM emp;<br>（6）查询结果集的排序<br>示例：查询所有部门，结果按照部门编号升序排序<br>SELECT </em> FROM dept ORDER BY did ASC;#ascendant<br>示例：查询所有部门，结果按照部门编号降序排序<br>SELECT <em> FROM dept ORDER BY did DESC;#descendent<br>练习：查询所有员工信息，结果按照工资由小到大排序<br>SELECT </em> FROM emp ORDER BY salary DESC;<br>练习：查询所有员工，结果按照年龄有大到小排序<br>SELECT <em> FROM emp ORDER BY birthday ASC;<br>练习：查询所有员工，结果按照年龄有小到大排序<br>SELECT </em> FROM emp ORDER BY birthday DESC;<br>练习：查询所有员工，结果按照姓名的升序排序<br>SELECT <em> FROM emp ORDER BY ename ASC;<br>SELECT </em> FROM emp ORDER BY ename;<br>练习：查询所有员工，结果按照工资降序排序，如果工资相同按照姓名排序。<br>SELECT <em> FROM emp ORDER BY salary DESC,ename;<br>练习：查询所有的员工，结果按照性别排序，如果性别相同，按照工资的升序排序。<br>SELECT </em> FROM emp ORDER BY sex ASC,salary;<br>SELECT * FROM emp ORDER BY sex ,salary;</p>
+<p>ORDER BY 可以按照数值、日期/时间、字符串来排序<br>默认按照ASC升序排列</p>
+<p>(7)条件查询<br>示例：查询出编号为5的员工信息<br>SELECT <em> FROM emp WHERE eid=5;<br>练习：查询姓名为king的员工的编号，工资，生日。<br>SELECT eid,salary,birthday FROM emp WHERE ename=’King’;<br>查询出20好部门下所有的员工信息<br>SELECT </em> FROM emp WHERE deptId=20;<br>查询出男员工的所有信息<br>SELECT <em> FROM emp WHERE sex=1;<br>练习：查询出工资大于等于5000的员工所有信息<br>SELECT </em> FROM emp WHERE salary&gt;=5000;</p>
+<p>练习：查询出1991-1-1后出生的员工信息</p>
+<p>SELECT <em> FROM emp WHERE birthday&gt;’1991-1-1’;<br>练习：查询出不在10好部门的员工所有信息<br>SELECT </em> FROM emp WHERE deptId!=10; </p>
+<p>练习：查询出没有明确部门的员工信息<br>SELECT <em> FROM emp WHERE deptId IS NULL;<br>练习：查询出有明确部门的员工信息<br>SELECT </em> FROM emp WHERE deptId IS NOT NULL;<br>练习：查询出工资大于6000的女员工所有信息<br>SELECT <em> FROM emp WHERE salary&gt;6000 AND sex=0;<br>练习：查询出工资在5000~7000之间的员工所有信息<br>SELECT </em> FROM emp WHERE salary&gt;=5000 AND salary&lt;=7000;<br>SELECT <em> FROM emp WHERE salary  BETWEEN 5000 AND 7000;<br>练习：查询出工资为5000以下，7000以上的所有员工的所有信息<br>SELECT </em> FROM emp WHERE salary<5000 or="" salary="">7000;<br>SELECT <em> FROM emp WHERE salary NOT BETWEEN 5000 AND 7000;<br>练习：查询1990之前出生的员工和1993以后出生的所有信息<br>SELECT </em> FROM emp WHERE birthday&lt;’1990-1-1’ OR birthday&gt;=’1993-12-31’;<br>SELECT <em> FROM emp WHERE birthday NOT BETWEEN ‘1990-1-1’ AND ‘1993-12-31’;<br>练习：查询出1993年出生的员工所有信息<br>SELECT </em> FROM emp WHERE birthday BETWEEN ‘1993-1-1’ AND ‘1993-12-31’;<br>练习查询出10号部门和30号部门员工所有信息<br>SELECT <em> FROM emp WHERE deptId=10 OR deptId=30;<br>SELECT </em> FROM emp WHERE deptId IN(10,30);<br>练习：查询不在10号部门和30号部门员工所有信息<br>SELECT <em> FROM emp WHERE deptId NOT IN(10,30);<br>IS NULL/IS NOT NULL<br>AND/OR<br>BETWEEN…AND…/NOT BETWEEN..AND…<br>IN()/NOT IN()<br>注意：删除、更改、查询都可以结合条件查询。<br>（8）模糊条件查询<br>示例：查询出姓名含有字母e的员工的所有信息<br>SELECT </em> FROM emp WHERE ename LIKE ‘%e%’;<br>练习：查询出姓名中以e结尾的员工所有信息<br>SELECT <em> FROM emp WHERE ename LIKE ‘%e’;<br>练习：查询出姓名中倒数第二个字符为e的员工信息<br>SELECT </em> FROM emp WHERE ename LIKE ‘%e_’;<br>SQL中提供了两个模糊查询的字符<br>% 可以匹配任意多个字符 &gt;=0<br>_  可以匹配任意一个字符 =1<br>注意：以上两个匹配不能和=使用，必须使用LIKE关键字<br>（9）分页查询<br>假如查询的结果集中有太多的数据，一次显示不完，可以分页显示<br>需要有两个条件：当前的页码，每页的数据量<br>SELECT <em> FROM emp LIMIT start,count;<br>start:是一个数字，从结果集中的那1条开始读取，第1条称为0<br>count：是一个数字，最多读取的行数<br>每页开始的算法：<br>smart=(页码-1)</em>count<br>假设每页显示5条记录<br>第一页：SELECT <em> FROM emp LIMIT 0,5;<br>第二页：SELECT </em> FROM emp LIMIT 5,5;<br>第三页：SELECT <em> FROM emp LIMIT 10,5;<br>第四页：SELECT </em> FROM emp LIMIT 15,5;<br>假设每一页显示6条记录<br>第一页：SELECT <em> FROM emp LIMIT 0,6;<br>第二页：SELECT </em> FROM emp LIMIT 6,6;<br>第三页：SELECT * FROM emp LIMIT 12,6;</5000></p>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+      
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
     <article id="post-数据库的查询" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
     
@@ -407,6 +456,18 @@
               <div class="widget-entry-summary" style="margin: 0;">
             
 
+              <h6 style="margin: 0;"><a href="/2018/12/08/MySQL的查询/">MySQL的查询</a></h6>
+              <span>December 8, 2018</span>
+            </div>
+
+          </li>
+        
+          <li class="clearfix">
+
+            
+              <div class="widget-entry-summary" style="margin: 0;">
+            
+
               <h6 style="margin: 0;"><a href="/2018/12/05/数据库的查询/">数据库的查询</a></h6>
               <span>December 5, 2018</span>
             </div>
@@ -467,7 +528,7 @@
     <h3 class="widget-title">归档</h3>
 
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a><span class="archive-list-count">4</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a><span class="archive-list-count">5</span></li></ul>
     </div>
   </div>
 
